@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTheme } from '@mui/material/styles';
 
 const PageTwo: React.FC = () => {
   const [time, setTime] = React.useState(new Date());
   const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const theme = useTheme();
 
   React.useEffect(() => {
     const update = () => {
@@ -25,6 +27,7 @@ const PageTwo: React.FC = () => {
         transform: `translate(${position.x}px, ${position.y}px)`,
         transition: 'transform 0.5s ease-in-out',
         fontSize: '2rem',
+        color: theme.palette.text.primary,
       }}
     >
       {time.toLocaleTimeString()}

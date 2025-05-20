@@ -11,6 +11,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 
