@@ -1,8 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { addTask, removeTask, updateTask, setTasks } from '../features/todoSlice';
+import styled from 'styled-components';
+import { Button, TextField, Checkbox } from '@mui/material';
 
 const API_URL = 'http://localhost:4000';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+
+
+const TaskItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+  list-style: none;
+`;
+
+const List = styled.ul`
+  padding: 0;
+`;
 
 const TodoPage: React.FC = () => {
   const tasks = useAppSelector(state => state.todo.tasks);
@@ -53,31 +75,45 @@ const TodoPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <Container>
       <h2>Todo List</h2>
-      <input
-        value={text}
-        onChange={e => setText(e.target.value)}
-        placeholder="Add task"
-      />
-      <button onClick={handleAdd}>Add</button>
-      <ul>
+      <div>
+        <TextField
+          value={text}
+          onChange={e => setText(e.target.value)}
+          placeholder="Add task"
+          size="small"
+          sx={{ m: 1 }}
+        />
+        <Button variant="contained" onClick={handleAdd} sx={{ m: 1 }}>
+          Add
+        </Button>
+      </div>
+      <List>
         {tasks.map(task => (
-          <li key={task.id}>
-            <input
-              type="checkbox"
+          <TaskItem key={task.id}>
+            <Checkbox
               checked={task.completed}
               onChange={() => handleToggle(task.id, task.completed)}
+              sx={{ mr: 1 }}
             />
-            <input
+            <TextField
               value={task.text}
               onChange={e => handleChange(task.id, e.target.value)}
+              size="small"
+              sx={{ mr: 1 }}
             />
-            <button onClick={() => handleRemove(task.id)}>Remove</button>
-          </li>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => handleRemove(task.id)}
+            >
+              Remove
+            </Button>
+          </TaskItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 };
 
