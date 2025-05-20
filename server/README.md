@@ -19,3 +19,12 @@ npm start
 The server listens on port `4000` by default.
 
 The database is stored in the `db.json` file inside this folder and will be created automatically on first run.
+
+## Default Credentials
+
+On first start the database is populated with a default user:
+
+- **Username:** `admin`
+- **Password:** `admin`
+
+You can use these credentials to log in without registering a new account.
