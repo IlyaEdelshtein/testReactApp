@@ -10,36 +10,45 @@ const Nav = styled.nav`
   justify-content: center;
 `;
 
-const Tab = styled(Button)`
-  color: #fff;
-  margin: 0 0.5rem;
-  text-decoration: none;
-`;
+const tabSx = {
+  color: '#fff',
+  margin: '0 0.5rem',
+  textDecoration: 'none',
+};
 
 const Header: React.FC = () => (
   <Nav>
-    <Tab
+    <Button
       component={NavLink}
       to="/"
       end
-      sx={{ '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' } }}
+      sx={{
+        ...tabSx,
+        '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' },
+      }}
     >
       Todo List
-    </Tab>
-    <Tab
+    </Button>
+    <Button
       component={NavLink}
       to="/two"
-      sx={{ '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' } }}
+      sx={{
+        ...tabSx,
+        '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' },
+      }}
     >
       Page Two
-    </Tab>
-    <Tab
+    </Button>
+    <Button
       component={NavLink}
       to="/three"
-      sx={{ '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' } }}
+      sx={{
+        ...tabSx,
+        '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' },
+      }}
     >
       Page Three
-    </Tab>
+    </Button>
   </Nav>
 );
 
