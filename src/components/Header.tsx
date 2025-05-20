@@ -2,22 +2,26 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
+import { useThemeContext } from '../ThemeContext';
 
 const Nav = styled.nav`
-  background: #282c34;
+  background: ${({ theme }) => theme.palette.background.paper};
   padding: 1rem;
   display: flex;
   justify-content: center;
+  color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 const tabSx = {
-  color: '#fff',
+  color: 'inherit',
   margin: '0 0.5rem',
   textDecoration: 'none',
 };
 
-const Header: React.FC = () => (
-  <Nav>
+const Header: React.FC = () => {
+  const { toggleTheme, mode } = useThemeContext();
+  return (
+    <Nav>
     <Button
       component={NavLink}
       to="/"
@@ -49,8 +53,12 @@ const Header: React.FC = () => (
     >
       Page Three
     </Button>
-  </Nav>
-);
+      <Button onClick={toggleTheme} sx={tabSx}>
+        {mode === 'light' ? 'Dark' : 'Light'} Mode
+      </Button>
+    </Nav>
+  );
+};
 
 export default Header;
 

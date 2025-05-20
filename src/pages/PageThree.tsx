@@ -6,6 +6,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+  color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 const PageThree: React.FC = () => <Container>Page Three</Container>;
