@@ -19,6 +19,12 @@ const db = new Low(adapter, defaultData);
 async function init() {
   await db.read();
   db.data ||= defaultData;
+  // ensure default admin user exists
+  if (!db.data.users.find(u => u.username === 'admin')) {
+    const { salt, hash } = hashPassword('admin');
+    const user = { id: db.data.nextUserId++, username: 'admin', salt, hash };
+    db.data.users.push(user);
+  }
   await db.write();
 }
 
