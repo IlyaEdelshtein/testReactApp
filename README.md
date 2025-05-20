@@ -19,3 +19,16 @@ Launches the test runner in the interactive watch mode.
 
 Builds the app for production to the `build` folder.
 
+## Server
+
+The `server` folder contains a small Node.js API that persists the todo list in
+`lowdb`. To start it:
+
+```bash
+cd server
+npm install
+npm start
+```
+
+By default the API will be available on `http://localhost:4000`.
+
