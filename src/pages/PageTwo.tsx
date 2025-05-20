@@ -2,14 +2,14 @@ import React from 'react';
 
 const PageTwo: React.FC = () => {
   const [time, setTime] = React.useState(new Date());
-  const [position, setPosition] = React.useState({ top: 0, left: 0 });
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
 
   React.useEffect(() => {
     const update = () => {
       setTime(new Date());
       setPosition({
-        top: Math.random() * (window.innerHeight - 50),
-        left: Math.random() * (window.innerWidth - 100),
+        x: Math.random() * (window.innerWidth - 100),
+        y: Math.random() * (window.innerHeight - 50),
       });
     };
 
@@ -22,9 +22,8 @@ const PageTwo: React.FC = () => {
     <div
       style={{
         position: 'fixed',
-        top: position.top,
-        left: position.left,
-        transition: 'top 0.5s linear, left 0.5s linear',
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        transition: 'transform 0.5s ease-in-out',
         fontSize: '2rem',
       }}
     >
