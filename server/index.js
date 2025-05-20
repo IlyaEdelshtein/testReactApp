@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const { Low } = require('lowdb');
-const { JSONFile } = require('lowdb/node');
+import express from 'express';
+import cors from 'cors';
+import { Low } from 'lowdb';
+import { JSONFile } from 'lowdb/node';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -15,7 +15,7 @@ async function init() {
   await db.write();
 }
 
-init();
+await init();
 
 app.use(cors());
 app.use(express.json());
