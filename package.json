@@ -19,7 +19,10 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "styled-components": "^5.3.6",
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "@mui/material": "^5.15.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0"
   },
   "scripts": {
     "start": "react-scripts start",
