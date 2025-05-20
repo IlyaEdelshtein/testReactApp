@@ -12,7 +12,7 @@ test('renders header tab', () => {
       </BrowserRouter>
     </Provider>
   );
-  const linkElement = screen.getByText(/Page One/i);
+  const linkElement = screen.getByText(/Todo List/i);
   expect(linkElement).toBeInTheDocument();
 });
 

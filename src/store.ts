@@ -1,8 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import todoReducer from './features/todoSlice';
 
 // Example slice showing the typical setup
-import { createSlice } from '@reduxjs/toolkit';
-
 const exampleSlice = createSlice({
   name: 'example',
   initialState: { value: 0 },
@@ -18,6 +17,7 @@ export const { increment } = exampleSlice.actions;
 export const store = configureStore({
   reducer: {
     example: exampleSlice.reducer,
+    todo: todoReducer,
   },
 });
 

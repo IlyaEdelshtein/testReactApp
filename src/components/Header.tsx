@@ -20,7 +20,7 @@ const Tab = styled(NavLink)`
 const Header: React.FC = () => (
   <Nav>
     <Tab to="/" end>
-      Page One
+      Todo List
     </Tab>
     <Tab to="/two">
       Page Two
