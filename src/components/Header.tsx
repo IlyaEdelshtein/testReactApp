@@ -73,10 +73,10 @@ const Header: React.FC = () => {
           Register
         </Button>
       </>
-    )
-      <Button onClick={toggleTheme} sx={tabSx}>
-        {mode === 'light' ? 'Dark' : 'Light'} Mode
-      </Button>
+    )}
+    <Button onClick={toggleTheme} sx={tabSx}>
+      {mode === 'light' ? 'Dark' : 'Light'} Mode
+    </Button>
     </Nav>
   );
 };
