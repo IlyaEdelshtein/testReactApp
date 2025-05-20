@@ -14,19 +14,15 @@ const initialState: TodoState = {
   tasks: [],
 };
 
-let nextId = 1;
-
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    addTask: {
-      reducer: (state, action: PayloadAction<Task>) => {
-        state.tasks.push(action.payload);
-      },
-      prepare: (text: string) => ({
-        payload: { id: nextId++, text, completed: false } as Task,
-      }),
+    setTasks: (state, action: PayloadAction<Task[]>) => {
+      state.tasks = action.payload;
+    },
+    addTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
     },
     removeTask: (state, action: PayloadAction<number>) => {
       state.tasks = state.tasks.filter(task => task.id !== action.payload);
@@ -43,5 +39,5 @@ const todoSlice = createSlice({
   },
 });
 
-export const { addTask, removeTask, updateTask } = todoSlice.actions;
+export const { setTasks, addTask, removeTask, updateTask } = todoSlice.actions;
 export default todoSlice.reducer;
