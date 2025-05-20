@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import { useThemeContext } from '../ThemeContext';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { logout } from '../features/authSlice';
 
 const Nav = styled.nav`
   background: ${({ theme }) => theme.palette.background.paper};
@@ -20,6 +22,8 @@ const tabSx = {
 
 const Header: React.FC = () => {
   const { toggleTheme, mode } = useThemeContext();
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector(state => state.auth);
   return (
     <Nav>
     <Button
@@ -53,6 +57,23 @@ const Header: React.FC = () => {
     >
       Page Three
     </Button>
+    {auth.token ? (
+      <>
+        <span style={{ margin: '0 0.5rem' }}>Hello, {auth.username}</span>
+        <Button onClick={() => dispatch(logout())} sx={tabSx}>
+          Logout
+        </Button>
+      </>
+    ) : (
+      <>
+        <Button component={NavLink} to="/login" sx={tabSx}>
+          Login
+        </Button>
+        <Button component={NavLink} to="/register" sx={tabSx}>
+          Register
+        </Button>
+      </>
+    )
       <Button onClick={toggleTheme} sx={tabSx}>
         {mode === 'light' ? 'Dark' : 'Light'} Mode
       </Button>

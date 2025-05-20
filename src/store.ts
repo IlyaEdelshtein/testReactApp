@@ -1,5 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import todoReducer from './features/todoSlice';
+import authReducer from './features/authSlice';
 
 // Example slice showing the typical setup
 const exampleSlice = createSlice({
@@ -18,6 +19,7 @@ export const store = configureStore({
   reducer: {
     example: exampleSlice.reducer,
     todo: todoReducer,
+    auth: authReducer,
   },
 });
 

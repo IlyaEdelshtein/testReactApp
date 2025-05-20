@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { addTask, removeTask, updateTask, setTasks } from '../features/todoSlice';
 import styled from 'styled-components';
 import { Button, TextField, Checkbox } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = 'http://localhost:4000';
 
@@ -29,21 +30,30 @@ const List = styled.ul`
 
 const TodoPage: React.FC = () => {
   const tasks = useAppSelector(state => state.todo.tasks);
+  const token = useAppSelector(state => state.auth.token);
   const dispatch = useAppDispatch();
   const [text, setText] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${API_URL}/tasks`)
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+    fetch(`${API_URL}/tasks`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
       .then(data => dispatch(setTasks(data)))
       .catch(console.error);
-  }, [dispatch]);
+  }, [dispatch, token, navigate]);
 
   const handleAdd = async () => {
     if (text.trim()) {
       const res = await fetch(`${API_URL}/tasks`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ text: text.trim() }),
       });
       const newTask = await res.json();
@@ -55,7 +65,10 @@ const TodoPage: React.FC = () => {
   const handleToggle = async (id: number, completed: boolean) => {
     await fetch(`${API_URL}/tasks/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ completed: !completed }),
     });
     dispatch(updateTask({ id, completed: !completed }));
@@ -64,14 +77,20 @@ const TodoPage: React.FC = () => {
   const handleChange = async (id: number, newText: string) => {
     await fetch(`${API_URL}/tasks/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ text: newText }),
     });
     dispatch(updateTask({ id, text: newText }));
   };
 
   const handleRemove = async (id: number) => {
-    await fetch(`${API_URL}/tasks/${id}`, { method: 'DELETE' });
+    await fetch(`${API_URL}/tasks/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
     dispatch(removeTask(id));
   };
 
