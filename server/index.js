@@ -7,11 +7,12 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 const adapter = new JSONFile('db.json');
-const db = new Low(adapter);
+const defaultData = { tasks: [], nextId: 1 };
+const db = new Low(adapter, defaultData);
 
 async function init() {
   await db.read();
-  db.data ||= { tasks: [], nextId: 1 };
+  db.data ||= defaultData;
   await db.write();
 }
 
