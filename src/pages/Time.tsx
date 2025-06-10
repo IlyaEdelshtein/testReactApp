@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
 
-const PageTwo: React.FC = () => {
+const Time: React.FC = () => {
   const [time, setTime] = React.useState(new Date());
   const [position, setPosition] = React.useState({ x: 0, y: 0 });
   const theme = useTheme();
@@ -35,4 +35,4 @@ const PageTwo: React.FC = () => {
   );
 };
 
-export default PageTwo;
+export default Time;

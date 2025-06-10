@@ -70,23 +70,23 @@ const Header: React.FC = () => {
     </Button>
     <Button
       component={NavLink}
-      to="/two"
+      to="/time"
       sx={{
         ...tabSx,
         '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' },
       }}
     >
-      Page Two
+      Time
     </Button>
     <Button
       component={NavLink}
-      to="/three"
+      to="/ticktackgame"
       sx={{
         ...tabSx,
         '&.active': { backgroundColor: 'rgba(255,255,255,0.2)' },
       }}
     >
-      Page Three
+      Tick Tack Game
     </Button>
     {auth.token ? (
       <>
