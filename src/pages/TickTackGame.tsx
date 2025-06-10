@@ -83,7 +83,7 @@ const winningLines = [
   [2, 4, 6],
 ];
 
-const PageThree: React.FC = () => {
+const TickTackGame: React.FC = () => {
   const [board, setBoard] = React.useState<(null | 'X' | 'O')[]>(
     Array(9).fill(null)
   );
@@ -157,4 +157,4 @@ const PageThree: React.FC = () => {
   );
 };
 
-export default PageThree;
+export default TickTackGame;
