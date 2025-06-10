@@ -9,8 +9,6 @@ const port = process.env.PORT || 4000;
 
 const adapter = new JSONFile('db.json');
 const defaultData = {
-  tasks: [],
-  nextId: 1,
   users: [],
   nextUserId: 1,
 };
@@ -20,14 +18,24 @@ async function init() {
   await db.read();
   // Ensure the database has all expected properties
   db.data ||= { ...defaultData };
-  db.data.tasks ||= [];
-  db.data.nextId ||= 1;
   db.data.users ||= [];
   db.data.nextUserId ||= 1;
+  // ensure each user has task storage
+  for (const user of db.data.users) {
+    user.tasks ||= [];
+    user.nextTaskId ||= 1;
+  }
   // ensure default admin user exists
   if (!db.data.users.find(u => u.username === 'admin')) {
     const { salt, hash } = hashPassword('admin');
-    const user = { id: db.data.nextUserId++, username: 'admin', salt, hash };
+    const user = {
+      id: db.data.nextUserId++,
+      username: 'admin',
+      salt,
+      hash,
+      tasks: [],
+      nextTaskId: 1,
+    };
     db.data.users.push(user);
   }
   await db.write();
@@ -102,11 +110,18 @@ app.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'user exists' });
   }
   const { salt, hash } = hashPassword(password);
-  const user = { id: db.data.nextUserId++, username, salt, hash };
+  const user = {
+    id: db.data.nextUserId++,
+    username,
+    salt,
+    hash,
+    tasks: [],
+    nextTaskId: 1,
+  };
   db.data.users.push(user);
   await db.write();
   const token = signToken({ id: user.id, username: user.username });
-  res.status(201).json({ token });
+  res.status(201).json({ token, userId: user.id, username: user.username });
 });
 
 app.post('/login', async (req, res) => {
@@ -117,7 +132,7 @@ app.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'invalid credentials' });
   }
   const token = signToken({ id: user.id, username: user.username });
-  res.json({ token });
+  res.json({ token, userId: user.id, username: user.username });
 });
 
 app.get('/me', authMiddleware, async (req, res) => {
@@ -126,21 +141,23 @@ app.get('/me', authMiddleware, async (req, res) => {
 
 app.get('/tasks', authMiddleware, async (req, res) => {
   await db.read();
-  const tasks = db.data.tasks.filter(t => t.userId === req.user.id);
-  res.json(tasks);
+  const user = db.data.users.find(u => u.id === req.user.id);
+  if (!user) return res.sendStatus(404);
+  res.json(user.tasks);
 });
 
 app.post('/tasks', authMiddleware, async (req, res) => {
   const { text } = req.body;
   if (!text) return res.status(400).json({ error: 'text is required' });
   await db.read();
+  const user = db.data.users.find(u => u.id === req.user.id);
+  if (!user) return res.sendStatus(404);
   const task = {
-    id: db.data.nextId++,
+    id: user.nextTaskId++,
     text,
     completed: false,
-    userId: req.user.id,
   };
-  db.data.tasks.push(task);
+  user.tasks.push(task);
   await db.write();
   res.status(201).json(task);
 });
@@ -148,7 +165,9 @@ app.post('/tasks', authMiddleware, async (req, res) => {
 app.put('/tasks/:id', authMiddleware, async (req, res) => {
   const id = parseInt(req.params.id, 10);
   await db.read();
-  const task = db.data.tasks.find(t => t.id === id && t.userId === req.user.id);
+  const user = db.data.users.find(u => u.id === req.user.id);
+  if (!user) return res.sendStatus(404);
+  const task = user.tasks.find(t => t.id === id);
   if (!task) return res.sendStatus(404);
   Object.assign(task, req.body);
   await db.write();
@@ -158,11 +177,11 @@ app.put('/tasks/:id', authMiddleware, async (req, res) => {
 app.delete('/tasks/:id', authMiddleware, async (req, res) => {
   const id = parseInt(req.params.id, 10);
   await db.read();
-  const index = db.data.tasks.findIndex(
-    t => t.id === id && t.userId === req.user.id
-  );
+  const user = db.data.users.find(u => u.id === req.user.id);
+  if (!user) return res.sendStatus(404);
+  const index = user.tasks.findIndex(t => t.id === id);
   if (index === -1) return res.sendStatus(404);
-  db.data.tasks.splice(index, 1);
+  user.tasks.splice(index, 1);
   await db.write();
   res.sendStatus(204);
 });

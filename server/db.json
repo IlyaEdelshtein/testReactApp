@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "salt": "67c84fe466d9ab27a4467a8fa56f9a3c",
+      "hash": "1f17c542dc2c71966f9da1a074987725a7668511e3e0cd74439f167e9046431b69e1618820ee630d9fdf62dfb1b4ae41599afb4364c50993addcaab6fda1df3d",
+      "tasks": [],
+      "nextTaskId": 1
+    }
+  ],
+  "nextUserId": 2
+}
