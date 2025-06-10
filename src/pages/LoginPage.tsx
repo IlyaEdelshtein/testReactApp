@@ -20,7 +20,13 @@ const LoginPage: React.FC = () => {
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(setCredentials({ token: data.token, username }));
+      dispatch(
+        setCredentials({
+          token: data.token,
+          username: data.username,
+          userId: data.userId,
+        })
+      );
       navigate('/');
     } else {
       alert('Login failed');
